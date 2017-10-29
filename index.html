@@ -8,49 +8,25 @@
     </style>
 </head>
     <body>
-        The name is <span data-bind="text: personName"></span>
+        <h3>Neighborhood Map</h3>
+        <!--Filter function-->
+        <p>Choose a city:
+        <select data-bind="options: cities,
+                           optionsCaption: 'Choose...',
+                           optionsText: 'name',
+                           value: chosenCities"></select>
+
+        <button data-bind="enable: chosenCities,
+                           click: resetCities">Clear</button>
+        </p>
+
+        <p data-bind="with: chosenCities">You have chosen <b data-bind="text: name"></b></p>
 
         <!--From this line starts the implementation of google maps api-->
-        <h3>Neighborhood Map</h3>
         <div id="map"></div>
-        <script>
-          function initMap() {
-            var japan = {lat: 37.840, lng: 137.854};
-            var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 5,
-              center: japan
-            });
-
-            var locations = [
-                ['Tokyo', 35.718, 139.733, 1],
-                ['Kyoto', 35.010, 135.768, 2],
-                ['Osaka', 34.696, 135.501, 3],
-                ['Hakone', 35.234, 139.032, 4],
-                ['Sapporo', 43.074, 141.358, 5]
-            ];
-
-            var infoWindow = new google.maps.InfoWindow();
-            var marker, i;
-            for (i = 0; i < locations.length; i++) {
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                    map: map
-                });
-
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                    return function() {
-                        infoWindow.setContent(locations[i][0]);
-                        infoWindow.open(map, marker);
-                    }
-                })(marker, i));
-            }
-        }
-        </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApSZ97GwLmoPkU3CB8auc_5YMF2OV-qWk&callback=initMap"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
         <script type='text/javascript' src='js/app.js'></script>
-        <script>
-            ko.applyBindings(myViewModel);
-        </script>
     </body>
 </html>
