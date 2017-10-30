@@ -84,13 +84,14 @@ function CitiesViewModel() {
 
 
     //NEED HELP HERE
-    this.filteredMap = ko.computed(function() {
-        for(var i = 0; i < locations.length; i++) {
-            if (this.selectedCity === locations[i].name) {
-                console.log("Chosen city marker will show");
-            }
-        }
-    })
+    // this.selectedLocation = ko.observableArray(locations);
+    // this.filteredMap = ko.computed(function() {
+    //     for(var i = 0; i < locations.length; i++) {
+    //         if (this.selectedCity() === this.selectedLocation()[i].name) {
+    //             console.log("Chosen city marker will show");
+    //         }
+    //     }
+    // })
 }
 
 
@@ -123,7 +124,6 @@ function initMap() {
             }
         })(marker, i));
     }
-    ko.applyBindings(new ViewModel());
 }
 
 
