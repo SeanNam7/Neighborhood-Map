@@ -79,20 +79,31 @@ var locations = [{
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
 function CitiesViewModel() {
     this.cities = locations;
-    this.chosenCities = ko.observable();
-    this.selectedLocation = ko.observable(locations);
-    this.resetCities = function() { this.chosenCities(null) }
+    this.selectedCity = ko.observable(); //nothing selected by default
+    this.resetCities = function() { this.selectedCity(null) };
+
+
+    //NEED HELP HERE
+    this.filteredMap = ko.computed(function() {
+        for(var i = 0; i < locations.length; i++) {
+            if (this.selectedCity === locations[i].name) {
+                console.log("Chosen city marker will show");
+            }
+        }
+    })
 }
+
+
 //Activates Knockout
 ko.applyBindings(new CitiesViewModel());
 
 
 //Google maps function implementation activated through api url callback=initMap
 function initMap() {
-    var tokyoJapan = {lat: 35.708703, lng: 139.741370};
+    var tokyoJapan = {lat: 35.691850, lng: 139.737046};
     //Sets the center location of the map
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
+        zoom: 12,
         center: tokyoJapan
     });
 
@@ -114,31 +125,5 @@ function initMap() {
     }
     ko.applyBindings(new ViewModel());
 }
-
-    // ViewModel function
-function ViewModel() {
-    var map;
-    var marker;
-    var self = this;
-    self.categories = ko.observableArray(["All", "Tokyo", "Kyoto", "Osaka", "Hakone", "Sapporo"]);
-    self.selectedCategory = ko.observable('');
-    self.selectLocation = ko.observableArray(locations);
-    self.locations = ko.observableArray([]);
-    // Filter function
-    self.filteredItems = ko.computed(function () {
-        for (var i = 0; i < self.selectLocation().length; i++) {
-            if (self.selectedCategory() === "All" || !self.selectedCategory()) {
-                self.selectLocation()[i].show(true);
-                self.selectLocation()[i].marker.setVisible(true);
-            } else if (self.selectedCategory() === self.selectLocation()[i].category) {
-                self.selectLocation()[i].show(true);
-                self.selectLocation()[i].marker.setVisible(true);
-            } else {
-                self.selectLocation()[i].show(false);
-                self.selectLocation()[i].marker.setVisible(false);
-            }
-        }
-    });
-};
 
 

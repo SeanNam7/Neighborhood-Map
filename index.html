@@ -12,15 +12,15 @@
         <!--Filter function-->
         <p>Choose a city:
         <select data-bind="options: cities,
-                           optionsCaption: 'Choose...',
                            optionsText: 'name',
-                           value: chosenCities"></select>
+                           value: selectedCity,
+                           optionsCaption: 'Choose...'"></select>
 
-        <button data-bind="enable: chosenCities,
+        <button data-bind="enable: selectedCity,
                            click: resetCities">Clear</button>
         </p>
 
-        <p data-bind="with: chosenCities">You have chosen <b data-bind="text: name"></b></p>
+        <p data-bind="with: selectedCity">You have chosen <b data-bind="text: name"></b></p>
 
         <!--From this line starts the implementation of google maps api-->
         <div id="map"></div>

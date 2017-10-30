@@ -13,12 +13,18 @@ There are two options.
 ## Directions
 
 
-## Design notes
+## Design notes & sources
 <ol>
     <li>I went with a more descriptive data even though it was more difficult to implement because I believe that clear and discriptive data makes it easier to understand the information later on.</li>
-    <li>app.js line 81: this.cities = locations
+    <li>'this.cities = locations' + 'options: cities' + 'optionsText: 'name''
         <ul>
-            <li>Due to the way my data is written, ko automatically shows the list of names in my select tag</li>
+            <li>These three lines allow me to connect the select element with the name of the locations.
+            </li>
+        </ul>
+    </li>
+    <li>index.html: line 14
+        <ul>
+            <li>Example #3 on website http://knockoutjs.com/documentation/options-binding.html</li>
         </ul>
     </li>
 </ol>
