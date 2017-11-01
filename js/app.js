@@ -78,20 +78,24 @@ var locations = [{
 
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
 function CitiesViewModel() {
+    var self = this;
     this.cities = locations;
     this.selectedCity = ko.observable(); //nothing selected by default
-    this.resetCities = function() { this.selectedCity(null) };
+    this.selectedLocation = ko.observableArray(locations);
+    this.resetCities = function(){
+        this.selectedCity(null)
+        showMarkers()
+    };
 
-
-    //NEED HELP HERE
-    // this.selectedLocation = ko.observableArray(locations);
-    // this.filteredMap = ko.computed(function() {
-    //     for(var i = 0; i < locations.length; i++) {
-    //         if (this.selectedCity() === this.selectedLocation()[i].name) {
-    //             console.log("Chosen city marker will show");
-    //         }
-    //     }
-    // })
+    //Filters the map depending on dropdown menu selection
+    this.filteredMap = ko.computed(function() {
+        for(var i = 0; i < locations.length; i++) {
+            if (self.selectedCity() === self.selectedLocation()[i]) {
+                clearMarkers();
+                markers[i].setMap(map);
+            }
+        }
+    })
 }
 
 
@@ -100,10 +104,13 @@ ko.applyBindings(new CitiesViewModel());
 
 
 //Google maps function implementation activated through api url callback=initMap
+var map;
+var markers = [];
+
 function initMap() {
     var tokyoJapan = {lat: 35.691850, lng: 139.737046};
     //Sets the center location of the map
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: tokyoJapan
     });
@@ -111,11 +118,19 @@ function initMap() {
     var infoWindow = new google.maps.InfoWindow();
     var marker, i;
     for (i = 0; i < locations.length; i++) {
-        //Creates a marker for each location
+        //Creates a marker on the map for each location
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(locations[i].coordinates.lat, locations[i].coordinates.lng),
-            map: map
+            map: map,
+            name: locations[i].name
         });
+
+        //Attach marker to locations array
+        locations[i].marker = marker;
+
+        //Stores marker in the markers array
+        markers.push(marker)
+
         //Shows the name of location/marker when clicked
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
@@ -126,4 +141,21 @@ function initMap() {
     }
 }
 
+
+//Three functions below taken from google documentation site
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+        //.setMap adds the marker to the map
+        markers[i].setMap(map);
+    }
+}
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+    setMapOnAll(null);
+}
+// Shows any markers currently in the array.
+function showMarkers() {
+    setMapOnAll(map);
+}
 

@@ -27,4 +27,14 @@ There are two options.
             <li>Example #3 on website http://knockoutjs.com/documentation/options-binding.html</li>
         </ul>
     </li>
+    <li>functions setMapOnAll(), clearMarkers(), and showMarkers() taken from google documentation site
+        <ul>
+            <li>https://developers.google.com/maps/documentation/javascript/markers</li>
+        </ul>
+    </li>
+</ol>
+
+## Important lessons/techniques learned
+<ol>
+    <li>The use of 'var self = this;' when used inside functions that have a different scope.</li>
 </ol>

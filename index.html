@@ -11,20 +11,22 @@
         <h3>Neighborhood Map</h3>
         <!--Filter function-->
         <p>Choose a city:
-        <select data-bind="options: cities,
+        <select data-bind="options: locations,
                            optionsText: 'name',
                            value: selectedCity,
                            optionsCaption: 'Choose...'"></select>
 
         <button data-bind="enable: selectedCity,
-                           click: resetCities">Clear</button>
+                           click: resetCities">Reset</button>
         </p>
 
         <p data-bind="with: selectedCity">You have chosen <b data-bind="text: name"></b></p>
 
-        <!--From this line starts the implementation of google maps api-->
+        <!--Starts of google maps api-->
         <div id="map"></div>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApSZ97GwLmoPkU3CB8auc_5YMF2OV-qWk&callback=initMap"></script>
+        <!--End of google maps api-->
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
         <script type='text/javascript' src='js/app.js'></script>
