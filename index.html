@@ -3,8 +3,16 @@
     <style>
       #map {
         height: 450px;
-        width: 75%;
+        width: 70%;
+        float:right;
        }
+      #listview {
+        float: left;
+      }
+      li:hover {
+        color: #FCC900;
+        cursor: pointer;
+      }
     </style>
 </head>
     <body>
@@ -22,7 +30,14 @@
 
         <p data-bind="with: selectedCity">You have chosen <b data-bind="text: name"></b></p>
 
-        <!--Starts of google maps api-->
+        <!--List View-->
+        <div id="listview">This area will contain a list of places:
+          <ul data-bind="foreach: locations">
+            <li data-bind="text: name, click:"></li>
+          </ul>
+        </div>
+
+        <!--Start of google maps api-->
         <div id="map"></div>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApSZ97GwLmoPkU3CB8auc_5YMF2OV-qWk&callback=initMap"></script>
         <!--End of google maps api-->

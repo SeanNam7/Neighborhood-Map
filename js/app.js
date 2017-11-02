@@ -159,3 +159,5 @@ function showMarkers() {
     setMapOnAll(map);
 }
 
+//Location click event
+// showInfo = function()
