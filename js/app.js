@@ -113,9 +113,16 @@ function ViewModel() {
         setMapOnAll(map);
     }
 
-    //Location click event
-    showInfo = function() {
-        console.log("Clicked");
+    //Connects side listview locations with markers
+    showInfo = function(data) {
+        for(var i = 0; i < locations.length; i++) {
+            if(data.name === locations[i].name) {
+                //Sets off marker bounce animation
+                locations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
+                //Stops marker after 2 bounces
+                setTimeout(function(){ locations[i].marker.setAnimation(null); }, 1400);
+            }
+        }
     }
 
     //Will toggle the animation between a BOUNCE animation and no animation.
@@ -158,7 +165,10 @@ function initMap() {
 
         //Attach click event handler to marker with toggleBounce function
         marker.addListener('click', function() {
-            marker.setAnimation(google.maps.Animation.BOUNCE);
+            var me = this;
+            this.setAnimation(google.maps.Animation.BOUNCE);
+            //Stops marker after 2 bounces
+            setTimeout(function(){ me.setAnimation(null); }, 1400);
         })
 
         //Stores marker in the markers array

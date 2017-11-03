@@ -32,6 +32,11 @@ There are two options.
             <li>https://developers.google.com/maps/documentation/javascript/markers</li>
         </ul>
     </li>
+    <li>app.js: line 160
+        <ul>
+            <li>https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+        </ul>
+    </li>
 </ol>
 
 ## Important lessons/techniques learned
