@@ -1,19 +1,6 @@
 <html>
 <head>
-    <style>
-      #map {
-        height: 450px;
-        width: 70%;
-        float:right;
-       }
-      #listview {
-        float: left;
-      }
-      li:hover {
-        color: #FCC900;
-        cursor: pointer;
-      }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
     <body>
         <h3>Neighborhood Map</h3>
@@ -33,7 +20,7 @@
         <!--List View-->
         <div id="listview">This area will contain a list of places:
           <ul data-bind="foreach: locations">
-            <li data-bind="text: name, click:"></li>
+            <li data-bind="text: name, click: $parent.showInfo"></li>
           </ul>
         </div>
 

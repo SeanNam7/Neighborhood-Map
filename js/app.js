@@ -1,4 +1,4 @@
-
+//Note for myself = Three main modules(locations, ViewModel, initMap)
 
 //MODEL: application’s stored data.
 var locations = [{
@@ -77,7 +77,7 @@ var locations = [{
 ];
 
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
-function CitiesViewModel() {
+function ViewModel() {
     var self = this;
     this.cities = locations;
     this.selectedCity = ko.observable(); //nothing selected by default
@@ -96,17 +96,44 @@ function CitiesViewModel() {
             }
         }
     })
+    //Three functions below taken from google documentation site
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+            //.setMap adds the marker to the map
+            markers[i].setMap(map);
+        }
+    }
+    // Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+        setMapOnAll(null);
+    }
+    // Shows any markers currently in the array.
+    function showMarkers() {
+        setMapOnAll(map);
+    }
+
+    //Location click event
+    showInfo = function() {
+        console.log("Clicked");
+    }
+
+    //Will toggle the animation between a BOUNCE animation and no animation.
+    function toggleBounce() {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+    }
 }
 
 
-//Activates Knockout
-ko.applyBindings(new CitiesViewModel());
-
-
-//Google maps function implementation activated through api url callback=initMap
 var map;
+var infoWindow;
 var markers = [];
 
+//Google maps function implementation activated through api url callback=initMap
 function initMap() {
     var tokyoJapan = {lat: 35.691850, lng: 139.737046};
     //Sets the center location of the map
@@ -115,18 +142,24 @@ function initMap() {
         center: tokyoJapan
     });
 
-    var infoWindow = new google.maps.InfoWindow();
-    var marker, i;
+    infoWindow = new google.maps.InfoWindow();
+    var i;
     for (i = 0; i < locations.length; i++) {
         //Creates a marker on the map for each location
-        marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locations[i].coordinates.lat, locations[i].coordinates.lng),
+        var marker = new google.maps.Marker({
             map: map,
-            name: locations[i].name
+            name: locations[i].name,
+            position: new google.maps.LatLng(locations[i].coordinates.lat, locations[i].coordinates.lng),
+            animation: google.maps.Animation.DROP
         });
 
         //Attach marker to locations array
         locations[i].marker = marker;
+
+        //Attach click event handler to marker with toggleBounce function
+        marker.addListener('click', function() {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        })
 
         //Stores marker in the markers array
         markers.push(marker)
@@ -141,23 +174,5 @@ function initMap() {
     }
 }
 
-
-//Three functions below taken from google documentation site
-// Sets the map on all markers in the array.
-function setMapOnAll(map) {
-    for (var i = 0; i < markers.length; i++) {
-        //.setMap adds the marker to the map
-        markers[i].setMap(map);
-    }
-}
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers() {
-    setMapOnAll(null);
-}
-// Shows any markers currently in the array.
-function showMarkers() {
-    setMapOnAll(map);
-}
-
-//Location click event
-// showInfo = function()
+//Activates Knockout
+ko.applyBindings(new ViewModel());
