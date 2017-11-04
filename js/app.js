@@ -82,9 +82,12 @@ function ViewModel() {
     this.cities = locations;
     this.selectedCity = ko.observable(); //nothing selected by default
     this.selectedLocation = ko.observableArray(locations);
+    //Resets google maps to original site load state
     this.resetCities = function(){
         this.selectedCity(null)
         showMarkers()
+        //Closes all infoWindows
+        infoWindow.close();
     };
 
     //Filters the map depending on dropdown menu selection
@@ -113,7 +116,7 @@ function ViewModel() {
         setMapOnAll(map);
     }
 
-    //Connects side listview locations with markers
+    //Connects side listview with markers
     showInfo = function(data) {
         for(var i = 0; i < locations.length; i++) {
             if(data.name === locations[i].name) {
@@ -122,6 +125,10 @@ function ViewModel() {
                 locations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
                 //Stops marker after 2 bounces
                 setTimeout(function(){ eye.marker.setAnimation(null); }, 1400);
+                //Inputs name of location within infowindow
+                infoWindow.setContent(locations[i].name);
+                //Opens infoWindow of clicked listing
+                infoWindow.open(map, locations[i].marker);
             }
         }
     }
@@ -150,7 +157,9 @@ function initMap() {
         center: tokyoJapan
     });
 
-    infoWindow = new google.maps.InfoWindow();
+    infoWindow = new google.maps.InfoWindow({
+        maxWidth: 250
+    });
     var i;
     for (i = 0; i < locations.length; i++) {
         //Creates a marker on the map for each location
@@ -161,7 +170,7 @@ function initMap() {
             animation: google.maps.Animation.DROP
         });
 
-        //Attach marker to locations array
+        //Add marker as a property of each location
         locations[i].marker = marker;
 
         //Attach click event handler to marker with toggleBounce function
@@ -175,7 +184,7 @@ function initMap() {
         //Stores marker in the markers array
         markers.push(marker)
 
-        //Shows the name of location/marker when clicked
+        //Shows the name of location when marker is clicked
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
                 infoWindow.setContent(locations[i].name);
