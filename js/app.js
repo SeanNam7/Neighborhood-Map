@@ -1,80 +1,5 @@
 //Note for myself = Three main modules(locations, ViewModel, initMap)
 
-//MODEL: application’s stored data.
-var locations = [{
-        name: 'Tsukiji Fish Market',
-        category: 'Food',
-        coordinates: {
-            lat: 35.665765,
-            lng: 139.770688
-        },
-        value: 1
-    },{
-        name: 'Ichiran Shibuya Ramen',
-        category: 'Food',
-        coordinates: {
-            lat: 35.661292,
-            lng: 139.701097
-        },
-        value: 2
-    },{
-        name: 'Sushi Dai',
-        category: 'Food',
-        coordinates: {
-            lat: 35.663868,
-            lng: 139.769669
-        },
-        value: 3
-    },{
-        name: 'Imperial Palace',
-        category: 'History',
-        coordinates: {
-            lat: 35.685413,
-            lng: 139.752851
-        },
-        value: 4
-    },{
-        name: 'Tokyo National Museum',
-        category: 'History',
-        coordinates: {
-            lat: 35.719079,
-            lng: 139.776521
-        },
-        value: 5
-    },{
-        name: 'Akasuka Shrine',
-        category: 'History',
-        coordinates: {
-            lat: 35.715305,
-            lng: 139.797514
-        },
-        value: 6
-    },{
-        name: 'Rainbow Bridge',
-        category: 'Scenery',
-        coordinates: {
-            lat: 35.636780,
-            lng: 139.763691
-        },
-        value: 7
-    },{
-        name: 'Shinjuku Gyoen National Garden',
-        category: 'Scenery',
-        coordinates: {
-            lat: 35.683573,
-            lng: 139.713227
-        },
-        value: 8
-    },{
-        name: 'Roppongi Mori Tower',
-        category: 'Scenery',
-        coordinates: {
-            lat: 35.660494,
-            lng: 139.729631
-        },
-        value: 9
-    }
-];
 
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
 function ViewModel() {
@@ -125,8 +50,27 @@ function ViewModel() {
                 locations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
                 //Stops marker after 2 bounces
                 setTimeout(function(){ eye.marker.setAnimation(null); }, 1400);
+
+
+
                 //Inputs name of location within infowindow
-                infoWindow.setContent(locations[i].name);
+                infoWindow.setContent('<h3>' + locations[i].name + '</h3>' +
+                                      '<div id="pano"></div>');
+
+                //Test up to this comment-----------------------
+                var panoramaOptions = {
+                    position: eye.coordinates,
+                    pov: {
+                        heading: 120,
+                        pitch: 30
+                    }
+                };
+
+                var panorama = new google.maps.StreetViewPanorama(
+                    document.getElementById('pano'), panoramaOptions);
+
+
+
                 //Opens infoWindow of clicked listing
                 infoWindow.open(map, locations[i].marker);
             }
@@ -154,7 +98,8 @@ function initMap() {
     //Sets the center location of the map
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: tokyoJapan
+        center: tokyoJapan,
+        mapTypeControl: false
     });
 
     infoWindow = new google.maps.InfoWindow({
@@ -187,7 +132,8 @@ function initMap() {
         //Shows the name of location when marker is clicked
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
-                infoWindow.setContent(locations[i].name);
+                infoWindow.setContent('<h3>' + locations[i].name + '</h3>' +
+                                      '<div id="pano"></div');
                 infoWindow.open(map, marker);
             }
         })(marker, i));
