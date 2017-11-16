@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Street View side-by-side</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map, #pano {
+        float: left;
+        height: 100%;
+        width: 45%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="pano"></div>
+    <script>
+
+      var home = {
+        name: 'Hancock Park',
+        coordinates:{
+            lat: 34.065559,
+            lng: -118.324759
+        }
+      }
+
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: home.coordinates,
+          zoom: 12,
+          mapTypeControl: false
+        });
+
+        var marker = new google.maps.Marker({
+            map: map,
+            name: home.name,
+            position: new google.maps.LatLng(34.065559, -118.324759),
+            animation: google.maps.Animation.DROP
+        });
+
+        home.marker = marker;
+
+        infoWindow = new google.maps.InfoWindow({
+          maxWidth: 250
+        });
+
+        var panoramaOptions = {
+          position: home.coordinates,
+          pov: {
+            heading: 270,
+            pitch: 10
+          }
+        };
+
+        var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), panoramaOptions);
+
+        map.setStreetView(panorama);
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApSZ97GwLmoPkU3CB8auc_5YMF2OV-qWk&callback=initMap">
+    </script>
+    <script src="js/data.js"></script>
+  </body>
+</html>

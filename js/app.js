@@ -1,4 +1,8 @@
-//Note for myself = Three main modules(locations, ViewModel, initMap)
+
+//Declare global variables
+var map;
+var infoWindow;
+var markers = [];
 
 
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
@@ -46,29 +50,14 @@ function ViewModel() {
         for(var i = 0; i < locations.length; i++) {
             if(data.name === locations[i].name) {
                 var eye = this;
-                //Sets off marker bounce animation
-                locations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
-                //Stops marker after 2 bounces
-                setTimeout(function(){ eye.marker.setAnimation(null); }, 1400);
-
-
+                toggleBounce(locations[i].marker);
 
                 //Inputs name of location within infowindow
-                infoWindow.setContent('<h3>' + locations[i].name + '</h3>' +
-                                      '<div id="pano"></div>');
+                infoWindow.setContent(locations[i].name + '<div id="pano"></div>');
 
-                //Test up to this comment-----------------------
-                var panoramaOptions = {
-                    position: eye.coordinates,
-                    pov: {
-                        heading: 120,
-                        pitch: 30
-                    }
-                };
+                // console.log(locations[i].name);
 
-                var panorama = new google.maps.StreetViewPanorama(
-                    document.getElementById('pano'), panoramaOptions);
-
+                // populateInfoWindow(this, infoWindow);
 
 
                 //Opens infoWindow of clicked listing
@@ -76,21 +65,9 @@ function ViewModel() {
             }
         }
     }
-
-    //Will toggle the animation between a BOUNCE animation and no animation.
-    function toggleBounce() {
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-    }
 }
 
 
-var map;
-var infoWindow;
-var markers = [];
 
 //Google maps function implementation activated through api url callback=initMap
 function initMap() {
@@ -120,10 +97,7 @@ function initMap() {
 
         //Attach click event handler to marker with toggleBounce function
         marker.addListener('click', function() {
-            var me = this;
-            this.setAnimation(google.maps.Animation.BOUNCE);
-            //Stops marker after 2 bounces
-            setTimeout(function(){ me.setAnimation(null); }, 1400);
+            toggleBounce(this)
         })
 
         //Stores marker in the markers array
@@ -138,6 +112,64 @@ function initMap() {
             }
         })(marker, i));
     }
+}
+
+function populateInfoWindow(marker, infoWindow) {
+    // Check to make sure the infowindow is not already opened on this marker.
+    if (infoWindow.marker != marker) {
+        // Clear the infowindow content to give the streetview time to load.
+        infoWindow.setContent('');
+        infoWindow.marker = marker;
+
+        // make sure infowindow is not open already
+        infoWindow.addListener('closeclick', function () {
+            infoWindow.marker = null;
+        });
+        var streetViewService = new google.maps.StreetViewService();
+        var radius = 50;
+
+        getStreetView = function(data, status) {
+            if (status == google.maps.StreetViewStatus.OK) {
+                // var nearStreetViewLocation = data.location.latLng;
+                // var heading = google.maps.geometry.spherical.computeHeading(
+                //     nearStreetViewLocation, marker.position);
+                infoWindow.setContent(locations[i].name + '<div id="pano"></div>');
+                var panoramaOptions = {
+                    // position: nearStreetViewLocation,
+                    position: locations[0].coordinates,
+                    pov: {
+                        // heading: heading,
+                        heading: 34,
+                        pitch: 30
+                    }
+                };
+                var panorama = new google.maps.StreetViewPanorama(
+                    document.getElementById('pano'), panoramaOptions);
+                } else {
+                    infoWindow.setContent('<div>' + marker.title
+                        + '</div><div>No Street View Found</div>');
+            };
+        };
+
+        // get the closest streetview image within 50 meters of marker
+        streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+        // Open infowindow on the selected marker
+        infoWindow.open(map, marker);
+    }
+};
+
+
+
+
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+        marker.setAnimation(null);
+    }, 1400);
+  }
 }
 
 //Activates Knockout
