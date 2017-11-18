@@ -1,12 +1,58 @@
 #map {
-  height: 450px;
-  width: 70%;
-  float:right;
+    height: 450px;
 }
 #listview {
-  float: left;
+    float: left;
 }
+#pano {
+    width: 225px;
+    height: 225px;
+}
+
 li:hover {
-  color: #FCC900;
-  cursor: pointer;
+    color: #FCC900;
+    cursor: pointer;
+}
+nav {
+    background-color: #242D36;
+    overflow: hidden;
+    border-bottom: 5px solid #F45145;
+
+}
+nav h3 {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 6px 8px;
+    text-decoration: none;
+    font-size: 28px;
+}
+body {
+    background-color: #f2f2f2;
+}
+
+@media only screen and (max-width: 795px) {
+    #listview {
+        display: none;
+    }
+    #map {
+        height: 500px;
+        width: 100%;
+    }
+    #drop-down {
+        text-align: center;
+    }
+    nav h3 {
+        float: none;
+    }
+}
+
+@media only screen and (min-width: 415px) and (max-width:795px) {
+    #map {
+        height: 800px;
+    }
+    #drop-down {
+        padding: 10px 5px;
+    }
 }

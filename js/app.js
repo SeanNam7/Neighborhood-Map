@@ -4,7 +4,6 @@ var map;
 var infoWindow;
 var markers = [];
 
-
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
 function ViewModel() {
     var self = this;
@@ -13,8 +12,9 @@ function ViewModel() {
     this.selectedLocation = ko.observableArray(locations);
     //Resets google maps to original site load state
     this.resetCities = function(){
-        this.selectedCity(null)
-        showMarkers()
+        tokyoCenter();
+        this.selectedCity(null);
+        showMarkers();
         //Closes all infoWindows
         infoWindow.close();
     };
@@ -25,6 +25,8 @@ function ViewModel() {
             if (self.selectedCity() === self.selectedLocation()[i]) {
                 clearMarkers();
                 markers[i].setMap(map);
+                toggleBounce(locations[i].marker);
+                populateInfoWindow(locations[i].marker, infoWindow);
             }
         }
     })
@@ -47,25 +49,14 @@ function ViewModel() {
 
     //Connects side listview with markers
     showInfo = function(data) {
-        for(var i = 0; i < locations.length; i++) {
+        for(let i = 0; i < locations.length; i++) {
             if(data.name === locations[i].name) {
-                var eye = this;
                 toggleBounce(locations[i].marker);
-
-                //Inputs name of location within infowindow
-                infoWindow.setContent(locations[i].name + '<div id="pano"></div>');
-
-                // console.log(locations[i].name);
-
-                // populateInfoWindow(this, infoWindow);
-
-
-                //Opens infoWindow of clicked listing
-                infoWindow.open(map, locations[i].marker);
+                populateInfoWindow(locations[i].marker, infoWindow);
             }
         }
     }
-}
+};
 
 
 
@@ -76,6 +67,7 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: tokyoJapan,
+        styles: stylesArray,
         mapTypeControl: false
     });
 
@@ -95,25 +87,18 @@ function initMap() {
         //Add marker as a property of each location
         locations[i].marker = marker;
 
-        //Attach click event handler to marker with toggleBounce function
+        //Attach click event handler to all markers
         marker.addListener('click', function() {
-            toggleBounce(this)
+            toggleBounce(this);
+            populateInfoWindow(this, infoWindow);
         })
 
         //Stores marker in the markers array
         markers.push(marker)
-
-        //Shows the name of location when marker is clicked
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function() {
-                infoWindow.setContent('<h3>' + locations[i].name + '</h3>' +
-                                      '<div id="pano"></div');
-                infoWindow.open(map, marker);
-            }
-        })(marker, i));
     }
-}
+};
 
+//Fills up infoWindow with name and camera view
 function populateInfoWindow(marker, infoWindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infoWindow.marker != marker) {
@@ -130,15 +115,10 @@ function populateInfoWindow(marker, infoWindow) {
 
         getStreetView = function(data, status) {
             if (status == google.maps.StreetViewStatus.OK) {
-                // var nearStreetViewLocation = data.location.latLng;
-                // var heading = google.maps.geometry.spherical.computeHeading(
-                //     nearStreetViewLocation, marker.position);
-                infoWindow.setContent(locations[i].name + '<div id="pano"></div>');
+                infoWindow.setContent('<h6>' + marker.name + '</h6>' + '<div id="pano"></div>');
                 var panoramaOptions = {
-                    // position: nearStreetViewLocation,
-                    position: locations[0].coordinates,
+                    position: marker.position,
                     pov: {
-                        // heading: heading,
                         heading: 34,
                         pitch: 30
                     }
@@ -158,9 +138,7 @@ function populateInfoWindow(marker, infoWindow) {
     }
 };
 
-
-
-
+//Makes markers bounce twice
 function toggleBounce(marker) {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
@@ -170,7 +148,13 @@ function toggleBounce(marker) {
         marker.setAnimation(null);
     }, 1400);
   }
-}
+};
+
+//Resets google maps center positioning and zoom
+function tokyoCenter() {
+    map.setCenter({lat: 35.691850, lng: 139.737046});
+    map.setZoom(12);
+};
 
 //Activates Knockout
 ko.applyBindings(new ViewModel());

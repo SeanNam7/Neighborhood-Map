@@ -22,8 +22,8 @@ var locations = [
         name: 'Sushi Dai',
         category: 'Food',
         coordinates: {
-            lat: 35.663868,
-            lng: 139.769669
+            lat: 35.663876,
+            lng: 139.769712
         },
         value: 3
     },

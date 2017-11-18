@@ -1,37 +1,51 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-    <body>
-        <h3>Neighborhood Map</h3>
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Tokyo Map</title>
+
+      <!--Bootstrap-->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      <!--CSS-->
+      <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+        <nav class="container-fluid">
+          <h3>Tokyo Map</h3>
+        </nav>
+
         <!--Filter function-->
-        <p>Choose a city:
-        <select data-bind="options: locations,
-                           optionsText: 'name',
-                           value: selectedCity,
-                           optionsCaption: 'Choose...'"></select>
+        <div class="container-fluid" id="drop-down">
+          Choose a city:
+          <select data-bind="options: locations,
+                             optionsText: 'name',
+                             value: selectedCity,
+                             optionsCaption: 'Choose...'"></select>
 
-        <button data-bind="enable: selectedCity,
-                           click: resetCities">Reset</button>
-        </p>
-
-        <p data-bind="with: selectedCity">You have chosen <b data-bind="text: name"></b></p>
-
-        <!--List View-->
-        <div id="listview">This area will contain a list of places:
-          <ul data-bind="foreach: locations">
-            <li data-bind="text: name, click: showInfo"></li>
-          </ul>
+          <button data-bind="click: resetCities">Reset</button>
         </div>
 
-        <!--Start of google maps api-->
-        <div id="map"></div>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApSZ97GwLmoPkU3CB8auc_5YMF2OV-qWk&callback=initMap"></script>
-        <!--End of google maps api-->
+        <!--List View-->
+        <main class="container-fluid">
+          <div class="row">
+            <div class="col-lg-3" id="listview">Attractions:
+              <ul data-bind="foreach: locations">
+                <li data-bind="text: name, click: showInfo"></li>
+              </ul>
+            </div>
 
+            <div class="col-lg-9" id="map"></div>
+          </div>
+        </main>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApSZ97GwLmoPkU3CB8auc_5YMF2OV-qWk&callback=initMap"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type='text/javascript' src='js/knockout-3.4.2.js'></script>
-        <script src="js/data.js"></script>
+        <script type='text/javascript' src='js/data.js'></script>
         <script type='text/javascript' src='js/app.js'></script>
+        <script type='text/javascript' src='js/googlemapstyles.js'></script>
     </body>
 </html>
