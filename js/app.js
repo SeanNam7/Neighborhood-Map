@@ -18,7 +18,6 @@ function ViewModel() {
         //Closes all infoWindows
         infoWindow.close();
     };
-
     //Filters the map depending on dropdown menu selection
     this.filteredMap = ko.computed(function() {
         for(var i = 0; i < locations.length; i++) {
@@ -29,7 +28,7 @@ function ViewModel() {
                 populateInfoWindow(locations[i].marker, infoWindow);
             }
         }
-    })
+    });
     //Three functions below taken from google documentation site
     // Sets the map on all markers in the array.
     function setMapOnAll(map) {
@@ -46,19 +45,16 @@ function ViewModel() {
     function showMarkers() {
         setMapOnAll(map);
     }
-
     //Connects side listview with markers
     showInfo = function(data) {
-        for(let i = 0; i < locations.length; i++) {
+        for(var i = 0; i < locations.length; i++) {
             if(data.name === locations[i].name) {
                 toggleBounce(locations[i].marker);
                 populateInfoWindow(locations[i].marker, infoWindow);
             }
         }
-    }
-};
-
-
+    };
+}
 
 //Google maps function implementation activated through api url callback=initMap
 function initMap() {
@@ -70,12 +66,16 @@ function initMap() {
         styles: stylesArray,
         mapTypeControl: false
     });
-
     infoWindow = new google.maps.InfoWindow({
         maxWidth: 250
     });
-    var i;
-    for (i = 0; i < locations.length; i++) {
+
+    var handleMarkerClick = function() {
+        var mark = this;
+        toggleBounce(this);
+        populateInfoWindow(this, infowindow);
+    };
+    for (var i = 0; i < locations.length; i++) {
         //Creates a marker on the map for each location
         var marker = new google.maps.Marker({
             map: map,
@@ -83,20 +83,20 @@ function initMap() {
             position: new google.maps.LatLng(locations[i].coordinates.lat, locations[i].coordinates.lng),
             animation: google.maps.Animation.DROP
         });
+        //Attach click event handler to all markers
+        marker.addListener('click', handleMarkerClick);
+        // marker.addListener('click', function() {
+        //     toggleBounce(this);
+        //     populateInfoWindow(this, infoWindow);
+        // });
 
         //Add marker as a property of each location
         locations[i].marker = marker;
-
-        //Attach click event handler to all markers
-        marker.addListener('click', function() {
-            toggleBounce(this);
-            populateInfoWindow(this, infoWindow);
-        })
-
         //Stores marker in the markers array
-        markers.push(marker)
+        markers.push(marker);
     }
-};
+        //function to handle the addListener
+}
 
 //Fills up infoWindow with name and camera view
 function populateInfoWindow(marker, infoWindow) {
@@ -105,14 +105,12 @@ function populateInfoWindow(marker, infoWindow) {
         // Clear the infowindow content to give the streetview time to load.
         infoWindow.setContent('');
         infoWindow.marker = marker;
-
         // make sure infowindow is not open already
         infoWindow.addListener('closeclick', function () {
             infoWindow.marker = null;
         });
         var streetViewService = new google.maps.StreetViewService();
         var radius = 50;
-
         getStreetView = function(data, status) {
             if (status == google.maps.StreetViewStatus.OK) {
                 infoWindow.setContent('<h6>' + marker.name + '</h6>' + '<div id="pano"></div>');
@@ -126,17 +124,16 @@ function populateInfoWindow(marker, infoWindow) {
                 var panorama = new google.maps.StreetViewPanorama(
                     document.getElementById('pano'), panoramaOptions);
                 } else {
-                    infoWindow.setContent('<div>' + marker.title
-                        + '</div><div>No Street View Found</div>');
-            };
+                    infoWindow.setContent('<div>' + marker.title +
+                                          '</div><div>No Street View Found</div>');
+            }
         };
-
         // get the closest streetview image within 50 meters of marker
         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         // Open infowindow on the selected marker
         infoWindow.open(map, marker);
     }
-};
+}
 
 //Makes markers bounce twice
 function toggleBounce(marker) {
@@ -148,13 +145,13 @@ function toggleBounce(marker) {
         marker.setAnimation(null);
     }, 1400);
   }
-};
+}
 
 //Resets google maps center positioning and zoom
 function tokyoCenter() {
     map.setCenter({lat: 35.691850, lng: 139.737046});
     map.setZoom(12);
-};
+}
 
 //Activates Knockout
 ko.applyBindings(new ViewModel());
