@@ -33,9 +33,6 @@ body {
 }
 
 @media only screen and (max-width: 795px) {
-    #listview {
-        display: none;
-    }
     #map {
         height: 500px;
         width: 100%;

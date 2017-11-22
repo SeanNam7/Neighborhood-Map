@@ -1,7 +1,6 @@
 #Tokyo Neighborhood Map Application
 ------------------------------------
-This is a simple single page application using a MVVM architectural pattern
-as well as a few APIs.
+This is a simple single page application using knockout.js and google maps API.
 
 ## Setup
 There are two options.
@@ -39,7 +38,3 @@ There are two options.
     </li>
 </ol>
 
-## Important lessons/techniques learned
-<ol>
-    <li>The use of 'var self = this;' when used inside functions that have a different scope.</li>
-</ol>

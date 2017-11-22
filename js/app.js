@@ -7,7 +7,6 @@ var markers = [];
 //VIEWMODEL = A pure-code representation of the data and operations on a UI
 function ViewModel() {
     var self = this;
-    this.cities = locations;
     this.selectedCity = ko.observable(); //nothing selected by default
     this.selectedLocation = ko.observableArray(locations);
     //Resets google maps to original site load state
@@ -29,6 +28,7 @@ function ViewModel() {
             }
         }
     });
+
     //Three functions below taken from google documentation site
     // Sets the map on all markers in the array.
     function setMapOnAll(map) {
@@ -69,11 +69,11 @@ function initMap() {
     infoWindow = new google.maps.InfoWindow({
         maxWidth: 250
     });
-
+    //Function to handle marker.addListener
     var handleMarkerClick = function() {
-        var mark = this;
+        var marker = this;
         toggleBounce(this);
-        populateInfoWindow(this, infowindow);
+        populateInfoWindow(this, infoWindow);
     };
     for (var i = 0; i < locations.length; i++) {
         //Creates a marker on the map for each location
@@ -85,10 +85,7 @@ function initMap() {
         });
         //Attach click event handler to all markers
         marker.addListener('click', handleMarkerClick);
-        // marker.addListener('click', function() {
-        //     toggleBounce(this);
-        //     populateInfoWindow(this, infoWindow);
-        // });
+
 
         //Add marker as a property of each location
         locations[i].marker = marker;
@@ -105,6 +102,77 @@ function populateInfoWindow(marker, infoWindow) {
         // Clear the infowindow content to give the streetview time to load.
         infoWindow.setContent('');
         infoWindow.marker = marker;
+
+        // // Foursquare API Client
+        // clientID = "WI0STIWK035RH1PKLGJU2SYBLYDU4NVBVSO53RBTFPU5RGRJ";
+        // clientSecret ="G44VBZ3F4OZJQ0L0WOHARNVDMKXGCML52RNG1A1XXQ5HXFHM";
+        // // URL for Foursquare API
+        // var apiUrl = 'https://api.foursquare.com/v2/venues/search?ll=' +
+        //     marker.lat + ',' + marker.lng + '&client_id=' + clientID +
+        //     '&client_secret=' + clientSecret + '&query=' + marker.title +
+        //     '&v=20170708' + '&m=foursquare';
+        // // Foursquare API
+        // $.getJSON(apiUrl).done(function(marker) {
+        //     var response = marker.response.venues[0];
+        //     self.street = response.location.formattedAddress[0];
+        //     self.city = response.location.formattedAddress[1];
+        //     self.zip = response.location.formattedAddress[3];
+        //     self.country = response.location.formattedAddress[4];
+        //     self.category = response.categories[0].shortName;
+        //     self.htmlContentFoursquare =
+        //         '<h5 class="iw_subtitle">(' + self.category +
+        //         ')</h5>' + '<div>' +
+        //         '<h6 class="iw_address_title"> Address: </h6>' +
+        //         '<p class="iw_address">' + self.street + '</p>' +
+        //         '<p class="iw_address">' + self.city + '</p>' +
+        //         '<p class="iw_address">' + self.zip + '</p>' +
+        //         '<p class="iw_address">' + self.country +
+        //         '</p>' + '</div>' + '</div>';
+
+        //         infowindow.setContent(self.htmlContent + self.htmlContentFoursquare);
+        //     }).fail(function() {
+        //         // Send alert
+        //         alert(
+        //             "There was an issue loading the Foursquare API. Please refresh your page to try again."
+        //         );
+        //     });
+
+
+
+        /*
+        Filter Markers by Category
+        */
+        // this.categories = ["All", "Food", "History", "Scenery"];
+        // this.selectedCategory = ko.observable(this.categories[0]);
+        // this.selectedLocation = ko.observableArray(locations);
+
+        // this.filteredItems = ko.computed(function() {
+        //     for (var i = 0; i < self.selectedLocation().length; i++) {
+        //         //show all markers if All is selected
+        //         if (self.selectedCategory() === "All" || !self.selectedCategory()) {
+        //             self.selectedLocation()[i].show(true);
+        //             if (self.selectedLocation()[i].marker) {
+        //                 self.selectedLocation()[i].marker.setVisible(true);
+        //             }
+        //         //only show markers with selected category
+        //         } else if (self.selectedCategory() === self.selectedLocation()[i].category) {
+        //             self.selectedLocation()[i].show(true);
+        //             if (self.selectedLocation()[i].marker) {
+        //                 self.selectedLocation()[i].marker.setVisible(true);
+        //             }
+        //         //hide markers who's category isn't selected
+        //         } else {
+        //             self.selectedLocation()[i].show(false);
+        //             if (self.selectedLocation()[i].marker) {
+        //                 self.selectedLocation()[i].marker.setVisible(false);
+        //             }
+        //         }
+        //     }
+        // });
+
+
+
+
         // make sure infowindow is not open already
         infoWindow.addListener('closeclick', function () {
             infoWindow.marker = null;

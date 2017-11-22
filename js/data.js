@@ -7,7 +7,7 @@ var locations = [
             lat: 35.665765,
             lng: 139.770688
         },
-        value: 1
+        show: ko.observable(true)
     },
     {
         name: 'Ichiran Shibuya Ramen',
@@ -16,7 +16,7 @@ var locations = [
             lat: 35.661292,
             lng: 139.701097
         },
-        value: 2
+        show: ko.observable(true)
     },
     {
         name: 'Sushi Dai',
@@ -25,7 +25,7 @@ var locations = [
             lat: 35.663876,
             lng: 139.769712
         },
-        value: 3
+        show: ko.observable(true)
     },
     {
         name: 'Imperial Palace',
@@ -34,7 +34,7 @@ var locations = [
             lat: 35.685413,
             lng: 139.752851
         },
-        value: 4
+        show: ko.observable(true)
     },
     {
         name: 'Tokyo National Museum',
@@ -43,7 +43,7 @@ var locations = [
             lat: 35.719079,
             lng: 139.776521
         },
-        value: 5
+        show: ko.observable(true)
     },
     {
         name: 'Akasuka Shrine',
@@ -52,7 +52,7 @@ var locations = [
             lat: 35.715305,
             lng: 139.797514
         },
-        value: 6
+        show: ko.observable(true)
     },
     {
         name: 'Rainbow Bridge',
@@ -61,7 +61,7 @@ var locations = [
             lat: 35.636780,
             lng: 139.763691
         },
-        value: 7
+        show: ko.observable(true)
     },
     {
         name: 'Shinjuku Gyoen National Garden',
@@ -70,7 +70,7 @@ var locations = [
             lat: 35.683573,
             lng: 139.713227
         },
-        value: 8
+        show: ko.observable(true)
     },
     {
         name: 'Roppongi Mori Tower',
@@ -79,6 +79,6 @@ var locations = [
             lat: 35.660494,
             lng: 139.729631
         },
-        value: 9
+        show: ko.observable(true)
     }
 ];
