@@ -1,79 +1,93 @@
 var stylesArray = [
   {
-    "featureType": "administrative.land_parcel",
-    "elementType": "labels",
-    "stylers": [
+    featureType: "administrative.neighborhood",
+    elementType: "labels",
+    stylers: [
+      { visibility: "off" }
+    ]
+  },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels",
+    stylers: [
+      { visibility: "off" }
+    ]
+  },
+  {
+    featureType: "administrative.land_parcel",
+    elementType: "labels",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "labels.text",
-    "stylers": [
+    featureType: "poi",
+    elementType: "labels.text",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "poi.business",
-    "stylers": [
+    featureType: "poi.business",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
+    featureType: "road",
+    elementType: "labels.icon",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "road.arterial",
-    "elementType": "labels",
-    "stylers": [
+    featureType: "road.arterial",
+    elementType: "labels",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "labels",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "labels",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "road.local",
-    "stylers": [
+    featureType: "road.local",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "road.local",
-    "elementType": "labels",
-    "stylers": [
+    featureType: "road.local",
+    elementType: "labels",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "transit",
-    "stylers": [
+    featureType: "transit",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   }

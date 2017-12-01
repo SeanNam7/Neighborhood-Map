@@ -1,4 +1,6 @@
-//MODEL: application’s stored data.
+
+/* ======= MODEL======= */
+
 var locations = [
     {
         name: 'Tsukiji Fish Market',
@@ -13,8 +15,8 @@ var locations = [
         name: 'Ichiran Shibuya Ramen',
         category: 'Food',
         coordinates: {
-            lat: 35.661292,
-            lng: 139.701097
+            lat: 35.661096,
+            lng: 139.701060
         },
         show: ko.observable(true)
     },
@@ -22,8 +24,8 @@ var locations = [
         name: 'Sushi Dai',
         category: 'Food',
         coordinates: {
-            lat: 35.663876,
-            lng: 139.769712
+            lat: 35.663622,
+            lng: 139.769670
         },
         show: ko.observable(true)
     },
@@ -31,8 +33,8 @@ var locations = [
         name: 'Imperial Palace',
         category: 'History',
         coordinates: {
-            lat: 35.685413,
-            lng: 139.752851
+            lat: 35.685176,
+            lng: 139.752776
         },
         show: ko.observable(true)
     },
@@ -40,17 +42,17 @@ var locations = [
         name: 'Tokyo National Museum',
         category: 'History',
         coordinates: {
-            lat: 35.719079,
-            lng: 139.776521
+            lat: 35.717836,
+            lng: 139.776476
         },
         show: ko.observable(true)
     },
     {
-        name: 'Akasuka Shrine',
+        name: 'Kanda Myojin Shrine',
         category: 'History',
         coordinates: {
-            lat: 35.715305,
-            lng: 139.797514
+            lat: 35.701806,
+            lng: 139.767697
         },
         show: ko.observable(true)
     },
@@ -73,7 +75,7 @@ var locations = [
         show: ko.observable(true)
     },
     {
-        name: 'Roppongi Mori Tower',
+        name: 'Roppongi Hills Mori Tower',
         category: 'Scenery',
         coordinates: {
             lat: 35.660494,
