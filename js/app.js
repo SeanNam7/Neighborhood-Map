@@ -10,6 +10,8 @@ function ViewModel() {
     this.categories = ["All", "Food", "History", "Scenery"];
     this.selectedCategory = ko.observable(this.categories[0]);
     this.selectedLocation = ko.observableArray(locations);
+    this.venueStreet = ko.observable("");
+    this.venueCity = ko.observable("");
 
     this.filteredItems = ko.computed(function() {
         for (var i = 0; i < self.selectedLocation().length; i++) {
@@ -97,6 +99,8 @@ function initMap() {
         zoom: 12,
         center: tokyoJapan,
         styles: stylesArray,
+        fullscreenControl: false,
+        streetViewControl: false,
         mapTypeControl: false
     });
     infoWindow = new google.maps.InfoWindow({
@@ -142,14 +146,12 @@ function populateInfoWindow(marker, infoWindow) {
 
         var CLIENT_ID = 'WI0STIWK035RH1PKLGJU2SYBLYDU4NVBVSO53RBTFPU5RGRJ';
         var CLIENT_SECRET = 'G44VBZ3F4OZJQ0L0WOHARNVDMKXGCML52RNG1A1XXQ5HXFHM';
-
+        // var venueStreet = "";
+        // var venueCity = "";
         var streetViewService = new google.maps.StreetViewService();
         var radius = 50;
         getStreetView = function(data, status) {
             if (status == google.maps.StreetViewStatus.OK) {
-
-                var venueStreet = "";
-                var venueCity = "";
 
                 $.ajax({
 
