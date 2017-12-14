@@ -208,5 +208,10 @@ function toggleBounce(marker) {
   }
 }
 
+// Added function to show alert box when Google Maps request fails
+function googleError() {
+  alert("Map did not load");
+}
+
 //Activates Knockout
 ko.applyBindings(new ViewModel());
