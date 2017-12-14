@@ -1,4 +1,3 @@
-
 //Declare global variables
 var map;
 var infoWindow;
@@ -10,8 +9,6 @@ function ViewModel() {
     this.categories = ["All", "Food", "History", "Scenery"];
     this.selectedCategory = ko.observable(this.categories[0]);
     this.selectedLocation = ko.observableArray(locations);
-    this.venueStreet = ko.observable("");
-    this.venueCity = ko.observable("");
 
     this.filteredItems = ko.computed(function() {
         for (var i = 0; i < self.selectedLocation().length; i++) {
@@ -146,8 +143,8 @@ function populateInfoWindow(marker, infoWindow) {
 
         var CLIENT_ID = 'WI0STIWK035RH1PKLGJU2SYBLYDU4NVBVSO53RBTFPU5RGRJ';
         var CLIENT_SECRET = 'G44VBZ3F4OZJQ0L0WOHARNVDMKXGCML52RNG1A1XXQ5HXFHM';
-        // var venueStreet = "";
-        // var venueCity = "";
+        var venueStreet = "";
+        var venueCity = "";
         var streetViewService = new google.maps.StreetViewService();
         var radius = 50;
         getStreetView = function(data, status) {
@@ -164,37 +161,32 @@ function populateInfoWindow(marker, infoWindow) {
                         '&v=20171130' +
                         '&m=foursquare' +
                         '&query=' + marker.name,
-                    async: true,
-                    success: function(data) {
-                                                console.log(data.response);
-                                                venueStreet = data.response.venues[0].location.formattedAddress[0];
-                                                venueCity = data.response.venues[0].location.formattedAddress[1];
-                                                console.log(venueStreet);
-                    }
-                // .done(function(result) {
-                //     console.log(result);
+                    async: true
+                }).done(function(data) {
+                    console.log(data.response);
+                    venueStreet = data.response.venues[0].location.formattedAddress[0];
+                    venueCity = data.response.venues[0].location.formattedAddress[1];
+                    console.log(venueStreet);
+                    console.log(venueCity);
 
-                //     // open and populate infowindow
-                //     infowindow.setContent('<div>' + marker.title + '</div><p>' + result.response.venues[0].location.address + '</p><p>' + result.response.venues[0].location.postalCode + '</p>');
+                    infoWindow.setContent('<h6>' + marker.name + '</h6>' +
+                                          '<p>' + venueStreet + '<br>' + venueCity + '</p>' +
+                                          '<div id="pano"></div>');
+                    var panoramaOptions = {
+                        position: marker.position,
+                        pov: {
+                            heading: 34,
+                            pitch: 30
+                        }
+                    };
+                    var panorama = new google.maps.StreetViewPanorama(
+                        document.getElementById('pano'), panoramaOptions);
                 }).fail(function(error) {
                     alert("Error, failed to load data to application");
                 });
-
-                infoWindow.setContent('<h6>' + marker.name + '</h6>' +
-                                      '<p>' + venueStreet + '<br>' + venueCity + '</p>' +
-                                      '<div id="pano"></div>');
-                var panoramaOptions = {
-                    position: marker.position,
-                    pov: {
-                        heading: 34,
-                        pitch: 30
-                    }
-                };
-                var panorama = new google.maps.StreetViewPanorama(
-                    document.getElementById('pano'), panoramaOptions);
-                } else {
-                    infoWindow.setContent('<div>' + marker.title +
-                                          '</div><div>No Street View Found</div>');
+            } else {
+                infoWindow.setContent('<div>' + marker.name +
+                                      '</div><div>No Street View Found</div>');
             }
         };
         // get the closest streetview image within 50 meters of marker
